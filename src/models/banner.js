@@ -25,4 +25,6 @@ var Banner = sequelize.define('banner', {
  }
 );
 
+sequelize.sync()
+
 module.exports = Banner

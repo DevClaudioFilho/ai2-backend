@@ -4,9 +4,9 @@ const Comment = require("../models/comment");
 const Post = require('../models/post');
 const User = require('../models/user');
 
-const controller = {}
 
-db.sync()
+
+const controller = {}
 
 controller.create = async (req,res) => {
   try {
@@ -23,7 +23,7 @@ controller.create = async (req,res) => {
 
 controller.list = async (req,res) => {
   try {
-    const findAllData = await Comment.findAll()
+    const findAllData = await Comment.findAll({include:[Post, {model:User,atributes:['name', 'email']}]})
     
     return res.status(200).json(findAllData)
   }
@@ -35,7 +35,7 @@ controller.list = async (req,res) => {
 controller.find = async (req,res) => {
   try {
     const { id } = req.params
-    const checkIfExist = await Comment.findOne({ where: { id }})
+    const checkIfExist = await Comment.findOne({include:[Post, {model:User,atributes:['name', 'email']}]})
     const status = checkIfExist ? 200 : 204
 
     return res.status(status).json(checkIfExist)
@@ -48,15 +48,7 @@ controller.find = async (req,res) => {
 controller.findByPostId = async (req,res) => {
   try {
     const { postId } = req.params
-    const checkIfExist = await Comment.findAll({ where: {postId},include:[ 
-      {      
-        model: User, 
-        as:'users'
-      }, 
-      {
-        model: Post, 
-        as:'posts'
-      }]})
+    const checkIfExist = await Comment.findAll({include:[Post, {model:User,atributes:['name', 'email']}]})
     const status = checkIfExist ? 200 : 204
 
     return res.status(status).json(checkIfExist)

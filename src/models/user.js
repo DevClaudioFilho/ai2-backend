@@ -21,7 +21,11 @@ var User = sequelize.define('users', {
   password:{
   type: Sequelize.STRING,
   allowNull: false
-  }
+  },
+  avatar: {
+    type: Sequelize.TEXT,
+    defaultValue: "" 
+  },
 })
 
 User.beforeCreate((user, options) => {
@@ -33,5 +37,7 @@ User.beforeCreate((user, options) => {
     throw new Error();
   });
 });
+
+sequelize.sync()
 
 module.exports = User

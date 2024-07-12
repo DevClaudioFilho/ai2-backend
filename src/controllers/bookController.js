@@ -1,9 +1,7 @@
-const db = require('../models/config/database');
 const Book = require("../models/book")
+const System = require("../models/system")
 
 const controller = {}
-
-db.sync()
 
 controller.create = async (req,res) => {
   try {
@@ -27,7 +25,7 @@ controller.create = async (req,res) => {
 
 controller.list = async (req,  res) => {
   try {
-    const findAllData = await Book.findAll()
+    const findAllData = await Book.findAll({include:[{model: System}]})
     
     return res.status(200).json(findAllData)
   }
@@ -39,7 +37,7 @@ controller.list = async (req,  res) => {
 controller.find = async (req,res) => {
   try {
     const { id } = req.params
-    const checkIfExist = await Book.findOne({ where: { id } })
+    const checkIfExist = await Book.findOne({ where: { id },include:[{model: System}] })
     const status = checkIfExist ? 200 : 204
 
     return res.status(status).json(checkIfExist)

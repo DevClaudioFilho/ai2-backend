@@ -8,6 +8,7 @@ let checkToken = (req, res, next) => {
     token = token.slice(7, token.length); //remove a palavra 'Bearer '
   }
 
+
   if (token) {
     jwt.verify(token, config.jwtSecret, (err, decoded) => {
       if (err) {

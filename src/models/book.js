@@ -1,5 +1,6 @@
 var Sequelize = require('sequelize');
 var sequelize = require('./config/database');
+var db = require('./config/database');
 
 var Book = sequelize.define('books', {
   id: {
@@ -22,5 +23,7 @@ var Book = sequelize.define('books', {
   }
  }
 );
+
+sequelize.sync()
 
 module.exports = Book

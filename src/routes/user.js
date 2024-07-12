@@ -6,4 +6,5 @@ const express = require('express');
  router.get('/list', middleware.checkToken, userController.list);
  router.post('/register',userController.register);
  router.post('/login',userController.login);
+ router.get('/current', middleware.checkToken,userController.checkToken);
  module.exports = router

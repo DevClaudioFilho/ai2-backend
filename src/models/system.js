@@ -34,4 +34,6 @@ var System = sequelize.define('systems', {
 System.hasMany(Book);
 Book.belongsTo(System);
 
+sequelize.sync()
+
 module.exports = System

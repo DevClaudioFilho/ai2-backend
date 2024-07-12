@@ -1,11 +1,9 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
-const db = require('../models/config/database');
 const config = require('../config');
 const controllers = {}
 
-db.sync()
 
 controllers.list = async (req, res) => {
   const data = await User.findAll()
@@ -98,5 +96,27 @@ controllers.login = async (req,res) => {
       });
     }
   }} 
-  
+
+controllers.checkToken = async (req,res) => {
+  let token = req.headers['x-access-token'] || req.headers['authorization'] 
+
+  if (token && token.startsWith('Bearer ')) {
+    token = token.slice(7, token.length); 
+  }
+
+  if (token) {
+    jwt.verify(token, config.jwtSecret, (err, decoded) => {
+        req.decoded = decoded;
+
+        User.findOne({where: { email: decoded.email}})
+        .then(function(data){
+          return res.json(data);
+        })
+        .catch(error =>{
+          return res.status(500).json({message:error.message});
+        })
+    });
+  } 
+} 
+    
 module.exports = controllers;

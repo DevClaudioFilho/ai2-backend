@@ -1,19 +1,19 @@
 const db = require('../models/config/database');
 
 const Post = require("../models/post")
+const User = require("../models/user")
 const controller = {}
-
-db.sync()
 
 controller.create = async (req,res) => {
   try {
-    let { title,text,autor,banner_image } = req.body
+    let { title,text,autor,banner_image,userId } = req.body
     
     const createdItem = await Post.create({ 
       title,
       text,
       autor,
-      banner_image
+      banner_image,
+      userId
     })
     
     return res.status(200).json(createdItem)
@@ -25,7 +25,7 @@ controller.create = async (req,res) => {
 
 controller.list = async (req,res) => {
   try {
-    const findAllData = await Post.findAll()
+    const findAllData = await Post.findAll({include:[{model:User,atributes:['name', 'email']}]})
     
     return res.status(200).json(findAllData)
   }
@@ -37,7 +37,7 @@ controller.list = async (req,res) => {
 controller.find = async (req,res) => {
   try {
     const { id } = req.params
-    const checkIfExist = await Post.findOne({ where: { id }})
+    const checkIfExist = await Post.findOne({ where: { id },include:[{model:User,atributes:['name', 'email']}]})
     const status = checkIfExist ? 200 : 204
 
     return res.status(status).json(checkIfExist)

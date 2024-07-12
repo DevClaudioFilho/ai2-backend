@@ -5,8 +5,6 @@ const Book = require("../models/book")
 
 const controller = {}
 
-db.sync()
-
 controller.create = async (req,res) => {
   try {
     let { title,short_description,description,banner_image,how_play_text,video_url } = req.body

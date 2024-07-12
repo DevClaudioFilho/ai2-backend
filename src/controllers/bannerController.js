@@ -3,8 +3,6 @@ const Banner = require("../models/banner")
 
 const controller = {}
 
-db.sync()
-
 controller.create = async (req,res) => {
   try {
     let { img_url,img_alt,title,message} = req.body
